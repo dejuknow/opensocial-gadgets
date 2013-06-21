@@ -80,7 +80,7 @@
         // URL that includes a Google-supplied request token. This is presented in the 
         // gadget as a link that the user clicks to begin the approval process.     
         function fetchData() {
-          var url = "http://api.twitter.com/1/account/verify_credentials.json";
+          var url = "http://api.twitter.com/1.1/account/verify_credentials.json";
           
           var callback = function(response) {
             if (response.oauthApprovalUrl) {
@@ -212,7 +212,7 @@
         }
         
         function showTimeline() {          
-          var url = "http://api.twitter.com/1/statuses/home_timeline.json" + "?count=" + tweetNum;
+          var url = "http://api.twitter.com/1.1/statuses/home_timeline.json" + "?count=" + tweetNum;
 
           var callback = function(response) {
             if (response.data) {
@@ -260,7 +260,7 @@
             validationDiv.innerHTML = '';
           }
 
-          var url = "http://api.twitter.com/1/statuses/update.json";
+          var url = "http://api.twitter.com/1.1/statuses/update.json";
 
           var callback = function(response) {
             if (response.data) {
