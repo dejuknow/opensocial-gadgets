@@ -1,0 +1,54 @@
+<Module>
+  <ModulePrefs title="Hello World UserPref Test" />
+  
+  <UserPref name="textColor" display_name="Text Color" datatype="enum" default_value="black" required="true">
+    <EnumValue value="black" display_value="Black"/>
+    <EnumValue value="blue" display_value="Blue"/>
+    <EnumValue value="green" display_value="Green"/>
+    <EnumValue value="red" display_value="Red"/>
+  </UserPref>
+  
+  <UserPref name="textColor2" display_name="Text Color2" datatype="enum" default_value="black" required="true">
+    <EnumValue value="black" display_value="Black"/>
+    <EnumValue value="blue" display_value="Blue"/>
+    <EnumValue value="green" display_value="Green"/>
+    <EnumValue value="red" display_value="Red"/>
+  </UserPref>
+
+  <UserPref name="textColor3" display_name="Text Color3" datatype="enum" default_value="black" required="true">
+    <EnumValue value="black" display_value="Black"/>
+    <EnumValue value="blue" display_value="Blue"/>
+    <EnumValue value="green" display_value="Green"/>
+    <EnumValue value="red" display_value="Red"/>
+  </UserPref>
+
+  <UserPref name="textColor4" display_name="Text Color4" datatype="enum" default_value="black" required="true">
+    <EnumValue value="black" display_value="Black"/>
+    <EnumValue value="blue" display_value="Blue"/>
+    <EnumValue value="green" display_value="Green"/>
+    <EnumValue value="red" display_value="Red"/>
+  </UserPref>
+
+  <Content type="html">
+    <![CDATA[
+      <script type="text/javascript">
+
+        var text = "Hello world!";
+        
+        var prefs = new gadgets.Prefs();
+
+        var textColor = prefs.getString("textColor");
+        var textColor2 = prefs.getString("textColor2");
+        var textColor3 = prefs.getString("textColor3");
+        var textColor4 = prefs.getString("textColor4");
+
+        document.write(text.fontcolor(textColor) + "<br/>");
+        document.write(text.fontcolor(textColor2) + "<br/>");
+        document.write(text.fontcolor(textColor3) + "<br/>");
+        document.write(text.fontcolor(textColor4) + "<br/>");
+
+
+      </script>
+    ]]>
+  </Content>
+</Module>

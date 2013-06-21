@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Module>
+  <ModulePrefs title="Test Gadget" >
+	<Require feature="opensocial-0.9" />
+	<Require feature="osapi" />
+  </ModulePrefs>
+  <Content type="html">
+    <![CDATA[
+		<html>
+		<head>
+			<title>Test Gadget</title>
+
+			<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+			<script type="text/javascript">
+				$(document).ready(function () {
+					$('#btnLoad').click(function () {
+						$('#txtResponse').val('loading...');
+						osapi.http.get({
+							'href': 'http://services.odata.org/OData/OData.svc/Products(1)?$format=json',
+							'format': 'json'
+						}).execute(callback);
+					});
+				});
+				
+				function callback(response) {
+					$('#txtResponse').val(gadgets.json.stringify(response));
+				} 
+			</script>
+		</head>
+		<body>
+			<div>
+				<button id="btnLoad">Load Data</button> <br />
+				<textarea id="txtResponse" rows="5" cols="40"></textarea>
+			</div>
+		</body>
+		</html>
+    ]]>
+  </Content>
+</Module>

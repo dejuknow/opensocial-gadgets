@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ <Module>
+  <ModulePrefs title="oAuth Java Example">
+    <Require feature="opensocial-0.7"></Require>
+    <Require feature="dynamic-height"></Require>
+  </ModulePrefs>
+  <Content type="html">
+   <![CDATA[
+    <script type="text/javascript">
+      var servletUrl="http://dejuknow:9080/ValidateSignedRequestServlet/ValidatingServlet";
+ 
+      function response(data) {
+        document.getElementById('dom_handle').innerHTML=data.text;
+      };
+ 
+      function request() {
+        var params={};
+        params[gadgets.io.RequestParameters.AUTHORIZATION] = gadgets.io.AuthorizationType.SIGNED;
+        gadgets.io.makeRequest(servletUrl,response,params);
+      };
+ 
+      gadgets.util.registerOnLoadHandler(request); 
+    </script>
+ 
+    <div id="dom_handle"></div>
+   ]]>
+   </Content>
+ </Module>

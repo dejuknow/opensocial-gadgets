@@ -1,0 +1,29 @@
+<Module>
+	<ModulePrefs title="Make Request" >
+	</ModulePrefs>
+
+	<Content type="html">
+		<![CDATA[
+			<input type="button" value="Make Request" onclick="makeRequest()">
+			
+			<script type="text/javascript">
+
+				var callback = function(data) {
+					alert(data);
+				};
+				
+				
+				var makeRequest = function() {
+					var params = {};
+				    params[gadgets.io.RequestParameters.CONTENT_TYPE] = gadgets.io.ContentType.FEED;
+				    params[gadgets.io.RequestParameters.NUM_ENTRIES] = new Number(5);
+					params[gadgets.io.RequestParameters.GET_SUMMARIES] = true;
+					
+					gadgets.io.makeRequest("http://blog.cloudmade.com/feed/", callback, params);
+				};
+				
+				makeRequest();
+			</script>
+		]]>
+	</Content>
+</Module>

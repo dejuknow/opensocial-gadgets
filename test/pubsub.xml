@@ -1,0 +1,12 @@
+<Module>
+<ModulePrefs title="pubsub test" title_url="http://groups.google.com/group/Google-Gadgets-API" scrolling="true">
+<Require feature="pubsub-2" />
+<Require feature="setprefs"/>
+</ModulePrefs>
+<Content type="html"><![CDATA[<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+just pubsub
+
+	]]></Content>
+<style/>
+</Module>

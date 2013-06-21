@@ -1,0 +1,452 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Module>
+  <ModulePrefs
+  title="__UP_title__"
+  directory_title="JIRA Issue Tracking"
+  title_url="http://dushan.hanuska.googlepages.com/jiraissuesgadget"
+  description="This gadget integrates personalized Google Home with an issue search on Atlassian JIRA. Live instance of JIRA can bee seen at http://jira.atlassian.com/."
+  author="Dushan Hanuska"
+  author_email="dushan.hanuska+gadget@gmail.com" 
+  author_affiliation="Atlassian Software Systems"
+  author_location="Sydney, New South Wales, Australia" 
+  author_photo="http://dushan.hanuska.googlepages.com/author_dushan_hanuska.png"
+  author_aboutme="I am a senior Java developer, currently residing in Sydney, Australia and working at Atlassian in JIRA team. For all Java and other things see my blog at http://hanuska.blogspot.com"
+  author_link="http://hanuska.blogspot.com"
+  author_quote="Life is what you make it."
+  screenshot="http://dushan.hanuska.googlepages.com/jira-issues-screenshot-icons.png"
+  singleton="false"
+  thumbnail="http://dushan.hanuska.googlepages.com/jira-issues-thumbnail.png"
+  >
+    <Require feature="analytics" />
+    <Require feature="dynamic-height" />
+    <Require feature="setprefs" />
+    <Require feature="settitle" />
+    <Locale lang="en" country="us" />
+  </ModulePrefs>
+  <UserPref name="version" datatype="hidden" default_value="1.2" />
+  <UserPref name="title" display_name="Gadget Title" default_value="JIRA Issues" /> 
+  <UserPref name="feedurl" display_name="JIRA XML URL" default_value="http://issues.liferay.com/sr/jira.issueviews:searchrequest-xml/temp/SearchRequest.xml?jqlQuery=project+%3D+LPS+AND+component+%3D+OpenSocial+AND+status+in+%28Open%2C+%22In+Progress%22%2C+Reopened%2C+%22In+Review%22%2C+%22Manual+Testing%22%2C+%22Automated+Testing%22%29" required="true"/>
+  <UserPref name="maxFeedItems" display_name="Items Total" datatype="enum" default_value="10" required="true">
+    <EnumValue value="1" display_value="1"/>
+    <EnumValue value="2" display_value="2"/>
+    <EnumValue value="3" display_value="3"/>
+    <EnumValue value="4" display_value="4"/>
+    <EnumValue value="5" display_value="5"/>
+    <EnumValue value="6" display_value="6"/>
+    <EnumValue value="7" display_value="7"/>
+    <EnumValue value="8" display_value="8"/>
+    <EnumValue value="9" display_value="9"/>
+    <EnumValue value="10" display_value="10"/>
+    <EnumValue value="11" display_value="11"/>
+    <EnumValue value="12" display_value="12"/>
+    <EnumValue value="13" display_value="13"/>
+    <EnumValue value="14" display_value="14"/>
+    <EnumValue value="15" display_value="15"/>
+    <EnumValue value="16" display_value="16"/>
+    <EnumValue value="17" display_value="17"/>
+    <EnumValue value="18" display_value="18"/>
+    <EnumValue value="19" display_value="19"/>
+    <EnumValue value="20" display_value="20"/>
+    <EnumValue value="21" display_value="21"/>
+    <EnumValue value="22" display_value="22"/>
+    <EnumValue value="23" display_value="23"/>
+    <EnumValue value="24" display_value="24"/>
+    <EnumValue value="25" display_value="25"/>
+    <EnumValue value="26" display_value="26"/>
+    <EnumValue value="27" display_value="27"/>
+    <EnumValue value="28" display_value="28"/>
+    <EnumValue value="29" display_value="29"/>
+    <EnumValue value="30" display_value="30"/>
+  </UserPref>
+  <UserPref name="displayIcons" display_name="Display icons?" default_value="true" datatype="bool" /> 
+  <UserPref name="refresh" display_name="Refresh (in minutes, 0-never)" default_value="5" />
+  <UserPref name="feedusername" display_name="Username" default_value="" />
+  <UserPref name="feedpassword" display_name="Password" default_value="" />
+  <UserPref name="useTooltip" display_name="Use Tooltip" default_value="true" datatype="bool" />
+  <Content type="html"><![CDATA[
+    
+    <link rel="stylesheet" type="text/css" media="screen" href="http://dushan.hanuska.googlepages.com/tips-style.css" />
+    <script type="text/javascript" src="http://dushan.hanuska.googlepages.com/mootools.v1.11.js"></script>
+    <style type="text/css">
+      #footer__MODULE_ID__ {
+        color: #808080;
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 9px;
+        text-align: right;
+        border-top: 1px solid #5F9ACF;
+        margin-top: 0.3em;
+      }
+      #footer__MODULE_ID__ a:link, #footer__MODULE_ID__ a:visited {
+        color: #808080;
+        text-decoration: none;
+        outline: none;
+      }
+      #footer__MODULE_ID__ a:hover, #footer__MODULE_ID__ a:active {
+        color: #808080;
+        text-decoration: underline;
+        outline: none;
+      }
+      .dude img {
+        border: 0;
+        padding: 0;
+        margin-top: 0.3em;
+        float: left;
+      }
+      .credits {
+        float: right;
+        margin-top: 0.3em;
+      }
+      #jiraissues__MODULE_ID__ {
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 12px;
+        outline: none;
+      }
+      .summary div {
+        height: 1.5em;
+        overflow: hidden;
+      }
+      a:link.issueLink, a:visited.issueLink {
+        color: #000;
+        text-decoration: none;
+      }
+      a:hover.issueLink, a:active.issueLink {
+        color: #FFF;
+        text-decoration: underline;
+      }
+      table.issues {
+        border-width: 0;
+        border-spacing: 0;
+        border-style: none;
+        border-collapse: collapse;
+        padding: 1px 2px 1px 2px;
+        padding: 1px 2px 1px 2px;
+        width: 100%;
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 12px;
+      }
+      table.issues tr th {
+        padding: 2px 3px 2px 3px;
+        text-align: left;
+        font-weight: bold;
+        background-color: #AAA;
+        color: #FFF;
+      }
+      table.issues tr td {
+        padding: 2px 3px 2px 3px;
+        text-align: left;
+        vertical-align: top;
+      }
+      table.issues tr.highlight, table.issues tr.highlight td a:link {
+        background-color: #5F9ACF;
+        color: #FFF;
+      }
+      .odd {
+        background-color: #FFF;
+      }
+      .even {
+        background-color: #E8F1FF;
+      }
+      .type {
+        width: 4%;
+        white-space: nowrap;
+      }
+      .icon img {
+        border: 0;
+        padding: 1px 0px 1px 0px;
+      }
+      .summary {
+        vertical-align: middle;
+        padding: 3px 3px 3px 3px;
+      }
+      .priority {
+        width: 4%;
+        white-space: nowrap;
+      }
+      .xmlurl {
+        color: #606060;
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 12px;
+        border: 1px solid #5F9ACF;
+      }
+      .error {
+        color: #DD0000;
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 12px;
+        font-weight: bold;
+      }
+      .msg {
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 12px;
+      }
+      .minor {
+        font-size: smaller;
+      }
+    </style>
+    
+    <div id="jiraissues__MODULE_ID__"><img src="http://dushan.hanuska.googlepages.com/waiting.gif" alt="" /> loading...</div>
+    <div id="footer__MODULE_ID__">
+      <span class="dude"><a href="http://www.atlassian.com/software/jira" target="_blank"><img src="http://dushan.hanuska.googlepages.com/atlassiandude.png" alt="atlassian" /></a><span>
+        <span class="credits">Created by <a href="http://hanuska.blogspot.com/" target="_blank">Dushan Hanuska</a>.</span>
+        </div>
+        <div id="debug__MODULE_ID__" style="font-size:9pt; padding:5px; color: red;"></div>
+        
+        <script type="text/javascript">
+          // Google Analytics
+          _IG_Analytics("UA-1805882-1", "/jira-issues-gadget");
+          
+          function issueClick() {
+            _IG_Analytics("UA-1805882-1", "/jira-issues-gadget/issueclick");
+          }
+          
+          // DEBUG flag. When its value is non-zero, debugging messages are displayed
+          var debug = 0;
+          // The string containing debugging messages
+          var debug_html = "<br/>";
+          // Outputs debug messages if debug flag has a non-zero value
+          function log(msg) {      
+            if (debug) {
+              debug_html += msg + "<br/>";
+              // Write debug HTML to div
+              _gel("debug__MODULE_ID__").innerHTML = debug_html;
+              _IG_AdjustIFrameHeight();
+            }
+          }
+          
+          function getXmlUrl(u) {
+            var feedusername = prefs.getString("feedusername");
+            var feedpassword = prefs.getString("feedpassword");
+            var xmlUrl = u;
+            if (u.indexOf("tempMax=") >= 0) {
+              xmlUrl = u.replace(/tempMax=[0-9]*/g, ("tempMax=" + __UP_maxFeedItems__));
+            }
+            else {
+              xmlUrl += "&tempMax=" + __UP_maxFeedItems__;
+            }
+            if (feedusername) {
+              xmlUrl += "&os_username=" + feedusername;
+              if (feedpassword) {
+                xmlUrl += "&os_password=" + feedpassword;
+              }
+            }
+            return xmlUrl;
+          }
+          
+          function update(xmlUrl) {
+            // DEBUG
+            log("Setting 'feedurl' to " + xmlUrl);
+            prefs.set('feedurl', xmlUrl);
+            log("Initialized.");
+            _IG_FetchXmlContent(getXmlUrl(xmlUrl), processFeed);
+          }
+          
+          function showLoading() {
+            _gel("jiraissues__MODULE_ID__").innerHTML = '<img src="http://dushan.hanuska.googlepages.com/waiting.gif" alt="" /> loading...';
+          }
+          
+          function getTypeIcon(u, id) {
+            switch(id) {
+              case '1':
+                return u + "images/icons/bug.gif";
+              case '2':
+                return u + "images/icons/newfeature.gif";
+              case '3':
+                return u + "images/icons/task.gif";
+              case '4':
+                return u + "images/icons/improvement.gif";
+              case '5':
+                return u + "images/icons/status_generic.gif";
+              case '6':
+                return u + "images/icons/issue_subtask.gif";
+              case '7':
+                return u + "images/icons/genericissue.gif";
+            }
+
+            return u + "images/icons/genericissue.gif";
+          }
+          
+          function getPriorityIcon(u, id) {
+            switch(id) {
+              case '1':
+                return u + "images/icons/priority_blocker.gif";
+              case '2':
+                return u + "images/icons/priority_critical.gif";
+              case '3':
+                return u + "images/icons/priority_major.gif";
+              case '4':
+                return u + "images/icons/priority_minor.gif";
+              case '5':
+                return u + "images/icons/priority_trivial.gif";
+            }
+            return null;
+          }
+          
+          // Get base url for icons
+          function getBaseUrl(url) {
+            var index = url.lastIndexOf("sr/jira.issueviews");
+            if (index >= 0) {
+              return url.substring(url, index);
+            }
+            return url;
+          }
+          
+          // Get userprefs
+          var prefs = new _IG_Prefs(__MODULE_ID__);
+          _IG_SetTitle(prefs.getString("title"));
+          
+          function processFeed(response)
+          {
+            var feedurl = prefs.getString("feedurl");
+            var maxFeedItems = prefs.getInt("maxFeedItems");
+            var displayIcons = prefs.getBool("displayIcons");
+            var useTooltip = prefs.getBool("useTooltip");
+            // Get base URL for icons (image locations)
+            var baseUrl = getBaseUrl(feedurl);
+            
+            var html = "";
+            
+            if (response == null || typeof(response) != "object" || response.firstChild == null) {
+              // DEBUG
+              log("Invalid response!");
+              _IG_Analytics("UA-1805882-1", "/jira-issues-gadget/invalid_response");
+              html += '<span class="error">Cannot retrieve JIRA data!</span><br />';
+              html += '<span class="msg">Possible causes: URL is invalid or JIRA is not accessible <span class="minor">(possibly behind firewall?)</span></span><br /><br />';
+              html += '<form action="" onsubmit="update(this.elements[\'xmlurl\'].value);showLoading();return false;" >';
+              html += '<input name="xmlurl" class="xmlurl" type="text" size="32" value="' + feedurl + '" />';
+              html += '<input type="submit" value="Save" />';
+              html += '</form>';
+              _gel("jiraissues__MODULE_ID__").innerHTML = html;
+              _IG_AdjustIFrameHeight();
+              return;
+                }
+            
+            log("Response is valid.");
+            
+            // Get a list of the <item> element nodes in the file
+            var itemList = response.getElementsByTagName("item");
+            
+            log("Items count: " + itemList.length + ' (' + maxFeedItems + ')');
+            
+            if (itemList.length > 0) {
+              html += '<table class="issues">';
+              if (displayIcons == false) {
+                html += '<tr><th>Type</th><th>Summary</th><th>Priority</th></tr>'
+                  }
+              
+              // Loop through all <item> nodes
+              for (var i = 0; i < itemList.length && i < maxFeedItems; i++) { 
+                var key = "";
+                var link = null;
+                var summary = "";
+                var type = "";
+                var typeIcon = null;
+                var priority = "";
+                var priorityIcon = null;
+                var status = "";
+                var resolution = "";
+                
+                // For each <item> node, get child nodes.
+                var nodeList = itemList.item(i).childNodes;
+                
+                // Loop through child nodes. Extract data from the text nodes that are
+                // the children of the associated name, price, and calories element nodes.
+                for (var j = 0; j < nodeList.length; j++) {
+                  var node = nodeList.item(j);
+                  if (node.nodeName == "key") {
+                    key = node.firstChild.nodeValue;
+                  }
+                  if (node.nodeName == "link") {
+                    link = node.firstChild.nodeValue;
+                  }
+                  if (node.nodeName == "summary") {
+                    summary = node.firstChild.nodeValue; 
+                  }
+                  if (node.nodeName == "type") {
+                    type = node.firstChild.nodeValue;
+                    if (displayIcons == true)
+                    {
+                      typeIcon = getTypeIcon(baseUrl, node.getAttribute("id"));
+                    }
+                  }
+                  if (node.nodeName == "priority") {
+                    priority = node.firstChild.nodeValue; 
+                    if (displayIcons == true)
+                    {
+                      priorityIcon = getPriorityIcon(baseUrl, node.getAttribute("id"));
+                    }
+                  }
+                  if (node.nodeName == "status") {
+                    status = node.firstChild.nodeValue; 
+                  }
+                  if (node.nodeName == "resolution") {
+                    resolution = node.firstChild.nodeValue; 
+                  }
+                }
+                
+                // Append extracted data to the HTML string.
+                html += '<tr class="summaryToolTip ' + (i % 2 == 0 ? 'even' : 'odd') + '" onMouseOver="this.className=\'highlight\'" onMouseOut="this.className=\'' + (i % 2 == 0 ? 'even' : 'odd') + '\'"';
+                if (useTooltip) {
+                  html += ' title="<span style=\'font-weight:bold;\'>' + key + '</span><br/>Type: ' + type + '<br/>Status: ' + status + '<br/>Resolution: ' + resolution + '<br/>' + summary + '"';
+                }
+                html += '>\n';
+                html += '\t<td class="type"' + (useTooltip ? '' : (' title="' + type + '"')) + '>';
+                if (displayIcons) {
+                  html += '<span class="icon">' + (typeIcon == null ? '&nbsp;' : '<img src="' + typeIcon + '" alt="' + type + '"/>') + '</span>';
+                }
+                else {
+                  html += type;
+                }
+                html += '</td>\n';
+                html += '\t<td class="summary"' + (useTooltip ? '' : (' title="' + summary + '"')) + '><div>';
+                if (link == null) {
+                  html += summary;
+                }
+                else {
+                  html += '<a class="issueLink" href="' + link + '" target="_blank" onClick="issueClick(); return true;">' + summary + '</a>';
+                }
+                html += '</div></td>\n';
+                html += '\t<td class="priority"' + (useTooltip ? '' : (' title="' + priority + '"')) + '>';
+                if (displayIcons) {
+                  html += '<span class="icon">' + (priorityIcon == null ? '&nbsp;' : '<img src="' + priorityIcon + '" title="Priority: ' + priority + '" alt="' + priority + '"/>') + '</span>';
+                }
+                else {
+                  html += priority;
+                }
+                html += '</td>\n';
+                html += '</tr>\n';
+              }
+              html += '</table>';
+            }
+            else {
+              html += '<span class="issues">No matching issues found</span>';
+            }
+            _gel("jiraissues__MODULE_ID__").innerHTML = html;
+            _IG_AdjustIFrameHeight();
+            if (useTooltip) {
+              new Tips($$('.summaryToolTip'), {
+                initialize:function(){
+                  this.fx = new Fx.Style(this.toolTip, 'opacity', {duration: 500, wait: false}).set(0);
+                },
+                onShow: function(toolTip) {
+                  this.fx.start(1);
+                },
+                onHide: function(toolTip) {
+                  this.fx.start(0);
+                }
+              });
+            }
+          }
+          
+          function refreshLoop(timeout) {
+            _IG_FetchXmlContent(getXmlUrl(prefs.getString("feedurl")), processFeed);
+            _IG_AdjustIFrameHeight();
+            var timeout = prefs.getInt("refresh");
+            log(timeout);
+            if (timeout > 0) {
+              setTimeout("refreshLoop(" + timeout + ")", timeout * 60000);
+            }
+          }
+          
+          refreshLoop();
+        </script>
+        ]]></Content>
+    </Module>

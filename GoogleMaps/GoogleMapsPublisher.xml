@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+
+<Module>
+  <ModulePrefs title="Google Address">
+    <Require feature="pubsub-2">
+      <Param name="topics">
+        <![CDATA[ 
+        <Topic title="Google Maps" name="com.liferay.opensocial.gmapsdemo" publish="true"/>
+        ]]>
+      </Param>
+    </Require>
+    <Require feature="dynamic-height" />
+  </ModulePrefs> 
+  
+  <Content type="html">
+    <![CDATA[    
+    <table>
+      <tr>
+        <td>Address:</td>
+        <td>
+          <input type="text" id="address" name="address" size="40" value="1220 Brea Canyon Rd, Walnut, CA 91789">
+        </td>
+        <td>
+          <input type="button" value="Update" onclick="updateLoc()">
+        </td>
+      </tr>
+    </table>
+    
+    <script type="text/javascript">
+      function updateLoc() {
+        var address = _gel("address").value;
+        gadgets.Hub.publish("com.liferay.opensocial.gmapsdemo", address);
+      }
+      
+      gadgets.window.adjustHeight();
+    </script>
+    ]]>
+  </Content>
+</Module>

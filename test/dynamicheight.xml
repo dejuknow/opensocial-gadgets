@@ -1,0 +1,27 @@
+<Module>
+	<ModulePrefs title="dynamic height test" title_url="http://groups.google.com/group/Google-Gadgets-API" scrolling="true">
+		<Require feature="dynamic-height"/>
+	</ModulePrefs>
+
+	<Content type="html">
+		<![CDATA[<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+			<script type="text/javascript">
+			
+				function initGadget() {
+				  var params = {};
+				  params[gadgets.io.RequestParameters.CONTENT_TYPE] = gadgets.io.ContentType.FEED;
+				  params[gadgets.io.RequestParameters.NUM_ENTRIES] = new Number(4);
+				  params[gadgets.io.RequestParameters.GET_SUMMARIES] = true;
+				  
+				  gadgets.io.makeRequest("http://blog.cloudmade.com/feed/", response, params);
+				}
+
+				function response() {
+				  gadgets.window.adjustHeight();
+				}
+
+				gadgets.util.registerOnLoadHandler(initGadget);
+			</script>
+		]]>
+	</Content>
+</Module>

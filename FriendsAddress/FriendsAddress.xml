@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Module>
+  <ModulePrefs title="Friends Address Lister">
+    <Require feature="opensocial-0.9"/>
+    <Require feature="osapi"/>
+    <Require feature="dynamic-height"/>
+    <Require feature="pubsub-2">
+      <Param name="topics">
+        <![CDATA[ 
+        <Topic title="Google Maps" name="com.liferay.opensocial.gmapsdemo" publish="true"/>
+        ]]>
+      </Param>
+    </Require>
+  </ModulePrefs>
+  
+  <Content type="html">
+    <![CDATA[
+    <script type="text/javascript" src="OpenSocialWrapper.js"></script>
+    <script type="text/javascript">
+      
+      var social = new OpenSocialWrapper();
+      
+      renderWelcome = function(div) {
+        social.loadPeople(function(response) {
+          owner = response.owner;
+          
+          var ownerFriends = response.ownerFriends;
+          
+          var html = owner.name.formatted + "'s friends' addresses: <br><br>";
+          
+          html += "<table>";
+          
+          for(i = 0; i < ownerFriends.list.length; i++) {
+            html += "<tr><td style='width:8em'>" + ownerFriends.list[i].name.formatted + "</td>";
+            
+            var addresses = ownerFriends.list[i].addresses;
+            
+            if (addresses) {
+              var address = addresses[0];
+              
+              var addressFormatted = address.formatted;
+              
+              var addressLine1 = address.streetAddress;
+              var addressLine2 = address.locality + ", " + address.region + " " + address.postalCode;
+              
+              html += "<td><a href='#' onClick='publishAddress(\"" + addressFormatted + "\");'>" + addressLine1 +"<br/>" + addressLine2 + "</a></td></tr>";
+            }
+          }
+          
+          html += "</table>";
+          
+          document.getElementById(div).innerHTML = html;
+          
+          gadgets.window.adjustHeight();
+        });
+      }
+        
+        function publishAddress(address) {
+          gadgets.Hub.publish("com.liferay.opensocial.gmapsdemo", address);
+        }
+      
+      // Initializes the gadget
+      function init() {
+        renderWelcome('welcome');
+      }
+      
+      gadgets.util.registerOnLoadHandler(init);
+    </script>
+    <div id='welcome'></div>
+    ]]>
+  </Content>
+</Module>

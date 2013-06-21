@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<Module>
+	<ModulePrefs title="AppData Test"  height="150">
+		<Require feature="opensocial-0.7"/>
+	</ModulePrefs>
+ 
+	<Content type="html">
+	  	<![CDATA[
+	  		<span>
+	  			Value:
+
+	  			<input type="text" id="value" name="value" size="20" >
+
+	  			<input type="button" value="Save New Value" onclick="saveAppData()">
+	  		<span>
+
+			<br />
+
+		 	<input type="button" value="Get Stored Value" onclick="getAppData()">
+
+		 	<br />
+
+		 	<input type="button" value="Delete Stored Value" onclick="deleteAppData()">
+			
+			<br />
+
+			<div id="content"></div>
+		 
+		    <script type="text/javascript">
+
+		    var key = 'myTestAppKey';
+
+		 	function saveAppData() {
+		 		var value = document.getElementById("value").value;
+
+		 		var req = opensocial.newDataRequest();
+
+				req.add(req.newFetchPersonRequest(opensocial.DataRequest.PersonId.VIEWER), "viewer");
+				req.add(req.newUpdatePersonAppDataRequest("VIEWER", key, value), "setData");
+				req.send(setData);
+		 	}
+		 
+		  	function getAppData() {
+		 		var req = opensocial.newDataRequest();
+
+				req.add(req.newFetchPersonRequest(opensocial.DataRequest.PersonId.VIEWER), "viewer");
+				req.add(req.newFetchPersonAppDataRequest("VIEWER", key), "getData");
+				req.send(getDataCallback);
+		 	}
+
+		 	function deleteAppData() {
+		 		var req = opensocial.newDataRequest();
+
+				req.add(req.newRemovePersonAppDataRequest("VIEWER", key), "clearData");
+				req.send(deleteDataCallback);
+		 	}
+
+			function getDataCallback(response) {
+				var userid = response.get("viewer").getData().getId();
+
+				var data = response.get("getData").getData();
+
+				var myValue = data[userid][key];
+
+				if (myValue != '') {
+					var html = "Stored value is: " + myValue;
+
+					document.getElementById("content").innerHTML = html;
+				} 
+				else {
+					var html = "No stored value found";
+
+					document.getElementById("content").innerHTML = html;
+				}
+			}
+		 
+			function setData(response) {
+				if (response.get("setData").hadError()) {
+					alert("set callback failed: "+response.get("setData").getErrorMessage());
+				} 
+				else {
+					var html = "Succesfully stored value";
+
+					document.getElementById("content").innerHTML = html;
+				}
+			}
+
+			function deleteDataCallback(response) {
+				if (response.get("clearData").hadError()) {
+					alert("set callback failed: "+response.get("clearData").getErrorMessage());
+				} 
+				else {
+					var html = "Value successfully deleted";
+
+					document.getElementById("content").innerHTML = html;
+				}
+			}
+
+			</script>
+	  	]]>
+	</Content>
+</Module>
