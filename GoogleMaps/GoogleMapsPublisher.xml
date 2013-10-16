@@ -18,7 +18,7 @@
       <tr>
         <td>Address:</td>
         <td>
-          <input type="text" id="address" name="address" size="40" value="1220 Brea Canyon Rd, Walnut, CA 91789">
+          <input type="text" id="address" name="address" size="40" value="1400 Montefino Ave, Diamond Bar, CA 91765">
         </td>
         <td>
           <input type="button" value="Update" onclick="updateLoc()">
