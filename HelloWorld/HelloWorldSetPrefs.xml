@@ -1,0 +1,32 @@
+<Module>
+  <ModulePrefs title="Hello World UserPref Test" />
+
+  <Content type="html">
+    <![CDATA[
+      <select id="colorChoices">
+       <option value="black">Black</option>
+       <option value="blue">Blue</option>
+       <option value="green">Green</option>
+       <option value="red">Red</option>
+      </select>
+
+      <div id="helloWorldContent"></div>
+
+      <script type="text/javascript">
+
+        var text = "Hello world!";
+
+        var selectedColor = document.getElementById("colorChoices");
+        var prefs = new gadgets.Prefs();
+
+        prefs.set("textColor", selectedColor);
+
+        var textColor = prefs.getString("textColor");
+
+        document.getElementById("helloWorldContent").innerHTML = "";
+
+        document.write(text.fontcolor(textColor) + "<br/>");
+      </script>
+    ]]>
+  </Content>
+</Module>
