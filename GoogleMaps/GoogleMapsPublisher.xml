@@ -1,19 +1,19 @@
-<?xml version="1.0" encoding="UTF-8" ?> 
+<?xml version="1.0" encoding="UTF-8" ?>
 
 <Module>
   <ModulePrefs title="Google Address">
     <Require feature="pubsub-2">
       <Param name="topics">
-        <![CDATA[ 
+        <![CDATA[
         <Topic title="Google Maps" name="com.liferay.opensocial.gmapsdemo" publish="true"/>
         ]]>
       </Param>
     </Require>
     <Require feature="dynamic-height" />
-  </ModulePrefs> 
-  
+  </ModulePrefs>
+
   <Content type="html">
-    <![CDATA[    
+    <![CDATA[
     <table>
       <tr>
         <td>Address:</td>
@@ -25,13 +25,13 @@
         </td>
       </tr>
     </table>
-    
+
     <script type="text/javascript">
       function updateLoc() {
-        var address = _gel("address").value;
+        var address = document.getElementById("address").value;
         gadgets.Hub.publish("com.liferay.opensocial.gmapsdemo", address);
       }
-      
+
       gadgets.window.adjustHeight();
     </script>
     ]]>

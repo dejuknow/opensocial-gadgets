@@ -1,49 +1,67 @@
-<?xml version="1.0" encoding="UTF-8" ?> 
+<?xml version="1.0" encoding="UTF-8" ?>
 
 <Module>
   <ModulePrefs title="Google Map">
     <Require feature="pubsub-2">
       <Param name="topics">
-        <![CDATA[ 
+        <![CDATA[
         <Topic title="Google Maps" name="com.liferay.opensocial.gmapsdemo" subscribe="true"/>
         ]]>
       </Param>
     </Require>
     <Require feature="dynamic-height" />
   </ModulePrefs>
-  
+
   <Content type="html">
-    <![CDATA[ 
-    <script src="http://maps.google.com/maps?file=api&amp;v=2.x" type="text/javascript"></script>
-    
+    <![CDATA[
+    <script src="https://maps.googleapis.com/maps/api/js?sensor=false" type="text/javascript"></script>
     <div id="map" style="width:100%;height:100%"></div>
-    
+
     <script type="text/javascript">
-      var geocoder = new GClientGeocoder();
-      
       gadgets.HubSettings.onConnect = function(hub, suc, err) {
         gadgets.Hub.subscribe("com.liferay.opensocial.gmapsdemo", callback);
       }
-        
-        function callback(topic, data, subscriberData) {			
-          geocoder.getLocations(data, showAddress);
-        }
-      
-      function showAddress(response) {
-        map.clearOverlays();
-        place = response.Placemark[0];
-        point = new GLatLng(place.Point.coordinates[1], place.Point.coordinates[0]);
-        marker = new GMarker(point);
-        map.addOverlay(marker);
-        marker.openInfoWindowHtml(place.address);
-        map.setZoom(12);
-        map.panTo(point, 13);
+
+      function callback(topic, data, subscriberData) {
+        geocoder.geocode( { 'address': data }, showAddress);
       }
-      
-      var map = new GMap2(_gel("map"));
-      
-      map.setCenter(new GLatLng(43, -100), 3);
-      
+
+      function showAddress(results, status) {
+        if (status == google.maps.GeocoderStatus.OK) {
+          while(overlays[0]) {
+            overlays.pop().setMap(null);
+          }
+
+          map.setCenter(results[0].geometry.location);
+
+          var marker = new google.maps.Marker(
+            {
+              map: map,
+              position: results[0].geometry.location
+            }
+          );
+
+          overlays.push(marker);
+        }
+        else {
+          alert('Failed to locate address. Reason: ' + status);
+        }
+
+        map.setZoom(12);
+      }
+
+      var overlays = [];
+
+      var geocoder = new google.maps.Geocoder();
+
+      var mapOptions = {
+        center: new google.maps.LatLng(43, -100),
+        zoom: 3,
+        mapTypeId: google.maps.MapTypeId.ROADMAP
+      };
+
+      var map = new google.maps.Map(document.getElementById("map"), mapOptions);
+
       gadgets.window.adjustHeight();
     </script>
     ]]>
