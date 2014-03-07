@@ -12,9 +12,9 @@
 
     <OAuth>
       <Service name="twitter"> 
-        <Request url="http://api.twitter.com/oauth/request_token" param_location="uri-query" /> 
-        <Access url="http://api.twitter.com/oauth/access_token" param_location="uri-query" /> 
-        <Authorization url="http://api.twitter.com/oauth/authorize" /> 
+        <Request url="https://api.twitter.com/oauth/request_token" param_location="uri-query" /> 
+        <Access url="https://api.twitter.com/oauth/access_token" param_location="uri-query" /> 
+        <Authorization url="https://api.twitter.com/oauth/authorize" /> 
       </Service> 
     </OAuth> 
   </ModulePrefs> 
@@ -25,7 +25,7 @@
     <![CDATA[
 	
       <!-- shindig oauth popup handling code -->
-      <script src="http://raw.github.com/dejuknow/opensocial-gadgets/master/common/popup.js"></script>
+      <script src="https://raw.github.com/dejuknow/opensocial-gadgets/master/common/popup.js"></script>
 
       <style>
         #error {
@@ -60,7 +60,7 @@
       </div>
     
       <div id="approval" style="display: none">
-        <img src="http://raw.github.com/dejuknow/opensocial-gadgets/master/images/new.gif">
+        <img src="https://raw.github.com/dejuknow/opensocial-gadgets/master/images/new.gif">
         <a href="#" id="personalize">Personalize this gadget</a>
       </div>
 
@@ -80,7 +80,7 @@
         // URL that includes a Google-supplied request token. This is presented in the 
         // gadget as a link that the user clicks to begin the approval process.     
         function fetchData() {
-          var url = "http://api.twitter.com/1.1/account/verify_credentials.json";
+          var url = "https://api.twitter.com/1.1/account/verify_credentials.json";
           
           var callback = function(response) {
             if (response.oauthApprovalUrl) {
@@ -212,7 +212,7 @@
         }
         
         function showTimeline() {          
-          var url = "http://api.twitter.com/1.1/statuses/home_timeline.json" + "?count=" + tweetNum;
+          var url = "https://api.twitter.com/1.1/statuses/home_timeline.json" + "?count=" + tweetNum;
 
           var callback = function(response) {
             if (response.data) {
@@ -260,7 +260,7 @@
             validationDiv.innerHTML = '';
           }
 
-          var url = "http://api.twitter.com/1.1/statuses/update.json";
+          var url = "https://api.twitter.com/1.1/statuses/update.json";
 
           var callback = function(response) {
             if (response.data) {
